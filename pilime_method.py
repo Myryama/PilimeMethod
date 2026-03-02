@@ -29,6 +29,7 @@ class TeamCirculation:
     quarters: int = 4
     team_size_min: int = 3
     team_size_max: int = 5
+    use_initials: bool = False
     
     # Tracking data
     assignments: Dict[int, List[Assignment]] = field(default_factory=dict)
@@ -39,6 +40,18 @@ class TeamCirculation:
         """Initialize the circulation tracker."""
         for member in self.members:
             self.leadership_count[member] = 0
+    
+    def _get_display_name(self, person: str) -> str:
+        """Get the display name for a person (full name or initials)."""
+        if not self.use_initials:
+            return person
+        
+        parts = person.split()
+        if len(parts) >= 2:
+            return f"{parts[0][0]}{parts[1][0]}"
+        elif len(parts) == 1:
+            return parts[0][0]
+        return person
     
     def _get_team_size(self) -> int:
         """Get a random team size between min and max."""
@@ -180,10 +193,21 @@ class TeamCirculation:
                 team = self.project_teams.get((quarter, project), [])
                 leader = next((a.person for a in self.assignments[quarter] 
                              if a.project == project and a.is_leader), "—")
-                team_str = ", ".join(team)
-                output.append(f"| {project} | {team_str} | {leader} |")
+                
+                # Apply display name formatting
+                team_display = ", ".join(self._get_display_name(member) for member in team)
+                leader_display = self._get_display_name(leader) if leader != "—" else "—"
+                
+                output.append(f"| {project} | {team_display} | {leader_display} |")
             
             output.append("")
+        
+        # Add key if using initials
+        if self.use_initials:
+            output.append("## Key\n")
+            for member in sorted(self.members):
+                initials = self._get_display_name(member)
+                output.append(f"- {initials}: {member}")
         
         return "\n".join(output)
 
@@ -209,8 +233,8 @@ def read_csv(filename: str, column: str = "name") -> List[str]:
 def main():
     """Main entry point."""
     # Read input files
-    members = read_csv("sample_members.csv", "name")
-    projects = read_csv("sample_projects.csv", "name")
+    members = read_csv("members.csv", "name")
+    projects = read_csv("projects.csv", "name")
     
     if not members:
         print("Error: No team members found in sample_members.csv")
@@ -224,7 +248,8 @@ def main():
     print()
     
     # Generate schedule
-    circulation = TeamCirculation(members, projects, quarters=4)
+    # Set use_initials=True to display initials instead of full names
+    circulation = TeamCirculation(members, projects, quarters=4, use_initials=True)
     circulation.generate_schedule()
     
     # Print verification
