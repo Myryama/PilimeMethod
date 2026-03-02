@@ -84,7 +84,11 @@ class TeamCirculation:
                 team.append(member)
         
         # Fill remaining slots, balancing workload
-        max_projects_per_person = 3  # Limit concurrent projects
+        # Calculate max projects per person based on team and project sizes
+        avg_team_size = (self.team_size_min + self.team_size_max) // 2
+        total_slots_needed = len(self.projects) * avg_team_size
+        max_projects_per_person = max(2, -(-total_slots_needed // len(self.members)))  # Ceiling division
+        
         candidates = [
             m for m in self.members 
             if m not in team and assigned_this_quarter.get(m, 0) < max_projects_per_person

@@ -11,43 +11,43 @@
 | Project Cartographer – Cross-border data flow mapping and transfer mechanism review | Anita Vreeland, Owen Pemberton, Claire Dussault, Raymond Guthrie, Sophia Wentworth | Anita Vreeland |
 | Operation Stronghold – Vendor due diligence programme rebuild post-acquisition | Marcus Ellery, Diane Forsythe, Colin Abernethy, Priya Nanthakumar, Stewart Caldwell | Stewart Caldwell |
 | Project Lantern – Employee data awareness training and culture change programme | Anita Vreeland, Owen Pemberton, Claire Dussault, Raymond Guthrie, Sophia Wentworth | Owen Pemberton |
-| The Solaris Review – Cookie consent and tracking technology audit across all digital assets |  | — |
+| The Solaris Review – Cookie consent and tracking technology audit across all digital assets | Marcus Ellery, Diane Forsythe, Colin Abernethy, Priya Nanthakumar, Stewart Caldwell | Priya Nanthakumar |
 
 ## Quarter 2
 
 | Project | Team Members | Leader |
 |---------|--------------|--------|
-| Project Meridian – Global ROPA harmonisation across 47 jurisdictions | Stewart Caldwell, Priya Nanthakumar, Marcus Ellery, Diane Forsythe | Priya Nanthakumar |
-| Operation Clearwater – Legacy data purge and retention schedule overhaul | Claire Dussault, Colin Abernethy, Anita Vreeland | Claire Dussault |
-| Project Sentinel – AI tool risk register and governance framework rollout | Diane Forsythe, Owen Pemberton, Raymond Guthrie | Diane Forsythe |
-| The Helix Initiative – Privacy by Design embedding into product development lifecycle | Stewart Caldwell, Colin Abernethy, Sophia Wentworth, Marcus Ellery, Priya Nanthakumar | Sophia Wentworth |
-| Project Cartographer – Cross-border data flow mapping and transfer mechanism review | Anita Vreeland, Owen Pemberton, Claire Dussault, Raymond Guthrie, Sophia Wentworth | Owen Pemberton |
-| Operation Stronghold – Vendor due diligence programme rebuild post-acquisition | Stewart Caldwell, Priya Nanthakumar, Marcus Ellery, Diane Forsythe, Colin Abernethy | Colin Abernethy |
-| Project Lantern – Employee data awareness training and culture change programme | Anita Vreeland, Owen Pemberton, Claire Dussault, Raymond Guthrie | Anita Vreeland |
-| The Solaris Review – Cookie consent and tracking technology audit across all digital assets | Sophia Wentworth | Sophia Wentworth |
+| Project Meridian – Global ROPA harmonisation across 47 jurisdictions | Marcus Ellery, Diane Forsythe, Colin Abernethy | Diane Forsythe |
+| Operation Clearwater – Legacy data purge and retention schedule overhaul | Owen Pemberton, Priya Nanthakumar, Stewart Caldwell | Owen Pemberton |
+| Project Sentinel – AI tool risk register and governance framework rollout | Sophia Wentworth, Anita Vreeland, Claire Dussault | Sophia Wentworth |
+| The Helix Initiative – Privacy by Design embedding into product development lifecycle | Priya Nanthakumar, Stewart Caldwell, Raymond Guthrie, Marcus Ellery, Diane Forsythe | Stewart Caldwell |
+| Project Cartographer – Cross-border data flow mapping and transfer mechanism review | Sophia Wentworth, Owen Pemberton, Colin Abernethy, Anita Vreeland, Claire Dussault | Claire Dussault |
+| Operation Stronghold – Vendor due diligence programme rebuild post-acquisition | Marcus Ellery, Raymond Guthrie, Diane Forsythe | Raymond Guthrie |
+| Project Lantern – Employee data awareness training and culture change programme | Sophia Wentworth, Owen Pemberton, Colin Abernethy, Priya Nanthakumar, Stewart Caldwell | Colin Abernethy |
+| The Solaris Review – Cookie consent and tracking technology audit across all digital assets | Marcus Ellery, Anita Vreeland, Claire Dussault | Marcus Ellery |
 
 ## Quarter 3
 
 | Project | Team Members | Leader |
 |---------|--------------|--------|
-| Project Meridian – Global ROPA harmonisation across 47 jurisdictions | Stewart Caldwell, Marcus Ellery, Diane Forsythe | Stewart Caldwell |
-| Operation Clearwater – Legacy data purge and retention schedule overhaul | Anita Vreeland, Colin Abernethy, Priya Nanthakumar, Owen Pemberton, Claire Dussault | Priya Nanthakumar |
-| Project Sentinel – AI tool risk register and governance framework rollout | Raymond Guthrie, Diane Forsythe, Sophia Wentworth, Marcus Ellery | Diane Forsythe |
-| The Helix Initiative – Privacy by Design embedding into product development lifecycle | Stewart Caldwell, Colin Abernethy, Priya Nanthakumar | Stewart Caldwell |
-| Project Cartographer – Cross-border data flow mapping and transfer mechanism review | Anita Vreeland, Owen Pemberton, Claire Dussault, Raymond Guthrie | Raymond Guthrie |
-| Operation Stronghold – Vendor due diligence programme rebuild post-acquisition | Stewart Caldwell, Sophia Wentworth, Marcus Ellery | Marcus Ellery |
-| Project Lantern – Employee data awareness training and culture change programme | Claire Dussault, Diane Forsythe, Colin Abernethy | Diane Forsythe |
-| The Solaris Review – Cookie consent and tracking technology audit across all digital assets | Sophia Wentworth, Priya Nanthakumar, Anita Vreeland, Owen Pemberton | Anita Vreeland |
+| Project Meridian – Global ROPA harmonisation across 47 jurisdictions | Marcus Ellery, Diane Forsythe, Colin Abernethy, Priya Nanthakumar, Stewart Caldwell | Priya Nanthakumar |
+| Operation Clearwater – Legacy data purge and retention schedule overhaul | Owen Pemberton, Priya Nanthakumar, Anita Vreeland, Claire Dussault | Anita Vreeland |
+| Project Sentinel – AI tool risk register and governance framework rollout | Sophia Wentworth, Raymond Guthrie, Marcus Ellery | Sophia Wentworth |
+| The Helix Initiative – Privacy by Design embedding into product development lifecycle | Marcus Ellery, Priya Nanthakumar, Diane Forsythe, Colin Abernethy | Diane Forsythe |
+| Project Cartographer – Cross-border data flow mapping and transfer mechanism review | Sophia Wentworth, Stewart Caldwell, Anita Vreeland | Stewart Caldwell |
+| Operation Stronghold – Vendor due diligence programme rebuild post-acquisition | Marcus Ellery, Owen Pemberton, Claire Dussault | Owen Pemberton |
+| Project Lantern – Employee data awareness training and culture change programme | Sophia Wentworth, Priya Nanthakumar, Raymond Guthrie, Diane Forsythe | Raymond Guthrie |
+| The Solaris Review – Cookie consent and tracking technology audit across all digital assets | Marcus Ellery, Colin Abernethy, Stewart Caldwell | Colin Abernethy |
 
 ## Quarter 4
 
 | Project | Team Members | Leader |
 |---------|--------------|--------|
-| Project Meridian – Global ROPA harmonisation across 47 jurisdictions | Stewart Caldwell, Marcus Ellery, Diane Forsythe | Marcus Ellery |
-| Operation Clearwater – Legacy data purge and retention schedule overhaul | Anita Vreeland, Owen Pemberton, Colin Abernethy, Priya Nanthakumar, Claire Dussault | Owen Pemberton |
-| Project Sentinel – AI tool risk register and governance framework rollout | Diane Forsythe, Marcus Ellery, Raymond Guthrie, Sophia Wentworth | Raymond Guthrie |
-| The Helix Initiative – Privacy by Design embedding into product development lifecycle | Stewart Caldwell, Colin Abernethy, Priya Nanthakumar, Anita Vreeland, Owen Pemberton | Priya Nanthakumar |
-| Project Cartographer – Cross-border data flow mapping and transfer mechanism review | Claire Dussault, Raymond Guthrie, Sophia Wentworth, Marcus Ellery, Diane Forsythe | Sophia Wentworth |
-| Operation Stronghold – Vendor due diligence programme rebuild post-acquisition | Stewart Caldwell, Sophia Wentworth, Colin Abernethy, Priya Nanthakumar, Anita Vreeland | Colin Abernethy |
-| Project Lantern – Employee data awareness training and culture change programme | Colin Abernethy, Diane Forsythe, Owen Pemberton, Claire Dussault, Raymond Guthrie | Claire Dussault |
-| The Solaris Review – Cookie consent and tracking technology audit across all digital assets | Sophia Wentworth | Sophia Wentworth |
+| Project Meridian – Global ROPA harmonisation across 47 jurisdictions | Marcus Ellery, Priya Nanthakumar, Diane Forsythe, Colin Abernethy, Stewart Caldwell | Marcus Ellery |
+| Operation Clearwater – Legacy data purge and retention schedule overhaul | Owen Pemberton, Priya Nanthakumar, Anita Vreeland, Claire Dussault | Priya Nanthakumar |
+| Project Sentinel – AI tool risk register and governance framework rollout | Sophia Wentworth, Marcus Ellery, Raymond Guthrie, Diane Forsythe, Colin Abernethy | Diane Forsythe |
+| The Helix Initiative – Privacy by Design embedding into product development lifecycle | Marcus Ellery, Priya Nanthakumar, Stewart Caldwell, Anita Vreeland, Owen Pemberton | Anita Vreeland |
+| Project Cartographer – Cross-border data flow mapping and transfer mechanism review | Sophia Wentworth, Anita Vreeland, Claire Dussault, Raymond Guthrie, Diane Forsythe | Sophia Wentworth |
+| Operation Stronghold – Vendor due diligence programme rebuild post-acquisition | Owen Pemberton, Marcus Ellery, Colin Abernethy, Stewart Caldwell, Claire Dussault | Claire Dussault |
+| Project Lantern – Employee data awareness training and culture change programme | Sophia Wentworth, Raymond Guthrie, Diane Forsythe | Diane Forsythe |
+| The Solaris Review – Cookie consent and tracking technology audit across all digital assets | Marcus Ellery, Colin Abernethy, Priya Nanthakumar | Colin Abernethy |
