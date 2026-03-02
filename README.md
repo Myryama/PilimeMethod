@@ -85,6 +85,8 @@ Example output with initials:
 | Project Beta | FG, GH, HI | HI |
 ```
 
+When using initials, a `## Key` section is automatically added at the end of the document showing the mapping of initials to full names.
+
 ## Customization
 
 To modify the script, you can adjust parameters in the `TeamCirculation` initialization:

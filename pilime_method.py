@@ -237,10 +237,10 @@ def main():
     projects = read_csv("projects.csv", "name")
     
     if not members:
-        print("Error: No team members found in sample_members.csv")
+        print("Error: No team members found in members.csv")
         exit(1)
     if not projects:
-        print("Error: No projects found in sample_projects.csv")
+        print("Error: No projects found in projects.csv")
         exit(1)
     
     print(f"Team Members ({len(members)}): {', '.join(members)}")
@@ -249,7 +249,7 @@ def main():
     
     # Generate schedule
     # Set use_initials=True to display initials instead of full names
-    circulation = TeamCirculation(members, projects, quarters=4, use_initials=True)
+    circulation = TeamCirculation(members, projects, quarters=4, use_initials=False)
     circulation.generate_schedule()
     
     # Print verification
