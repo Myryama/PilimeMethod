@@ -6,6 +6,7 @@ This script implements the Pilime Method for creating temporary work teams acros
 ensuring knowledge distribution and continuity of expertise.
 """
 
+import argparse
 import csv
 import random
 from dataclasses import dataclass, field
@@ -30,7 +31,8 @@ class TeamCirculation:
     team_size_min: int = 3
     team_size_max: int = 5
     use_initials: bool = False
-    
+    seed_leaders: Dict[str, str] = field(default_factory=dict)
+
     # Tracking data
     assignments: Dict[int, List[Assignment]] = field(default_factory=dict)
     leadership_count: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
@@ -40,6 +42,14 @@ class TeamCirculation:
         """Initialize the circulation tracker."""
         for member in self.members:
             self.leadership_count[member] = 0
+
+        # Precompute: max projects any one person may work on in a quarter.
+        # Depends only on fixed constructor args so it never changes.
+        avg_team_size = (self.team_size_min + self.team_size_max) // 2
+        total_slots = len(self.projects) * avg_team_size
+        self._max_projects_per_person: int = max(
+            2, -(-total_slots // len(self.members))  # ceiling division
+        )
     
     def _get_display_name(self, person: str) -> str:
         """Get the display name for a person (full name or initials)."""
@@ -60,20 +70,23 @@ class TeamCirculation:
     def _select_leader(self, candidates: List[str]) -> str:
         """
         Select a leader from candidates, prioritizing those with fewer leadership roles.
+        Uses a single O(n) pass rather than sorting.
         """
         if not candidates:
             raise ValueError("Cannot select leader from empty candidates list")
-        
-        # Sort by leadership count (ascending) and randomize within same count
-        candidates_sorted = sorted(candidates, key=lambda x: self.leadership_count[x])
-        min_count = self.leadership_count[candidates_sorted[0]]
-        eligible = [c for c in candidates_sorted if self.leadership_count[c] == min_count]
+
+        min_count = min(self.leadership_count[c] for c in candidates)
+        eligible = [c for c in candidates if self.leadership_count[c] == min_count]
         return random.choice(eligible)
     
     def _get_previous_team(self, quarter: int, project: str) -> Set[str]:
         """Get the team members from the previous quarter for a project."""
         if quarter == 0:
+            leader = self.seed_leaders.get(project)
+            if leader and leader in self.members:
+                return {leader}
             return set()
+        # Convert to set; callers sort before iterating for determinism.
         return set(self.project_teams.get((quarter - 1, project), []))
     
     def _assign_people_to_project(self, quarter: int, project: str, assigned_this_quarter: Dict[str, int]) -> List[str]:
@@ -88,32 +101,31 @@ class TeamCirculation:
         """
         team_size = self._get_team_size()
         previous_team = self._get_previous_team(quarter, project)
-        
-        team = []
-        
-        # Prefer to keep some previous team members (but allow new ones too)
-        for member in previous_team:
+
+        team: List[str] = []
+        team_set: Set[str] = set()  # O(1) membership checks
+
+        # Prefer to keep some previous team members (sorted for determinism).
+        for member in sorted(previous_team):
             if len(team) < max(1, team_size // 2):  # Keep ~half from previous team
                 team.append(member)
-        
-        # Fill remaining slots, balancing workload
-        # Calculate max projects per person based on team and project sizes
-        avg_team_size = (self.team_size_min + self.team_size_max) // 2
-        total_slots_needed = len(self.projects) * avg_team_size
-        max_projects_per_person = max(2, -(-total_slots_needed // len(self.members)))  # Ceiling division
-        
+                team_set.add(member)
+
+        # Fill remaining slots using the precomputed per-person project cap.
         candidates = [
-            m for m in self.members 
-            if m not in team and assigned_this_quarter.get(m, 0) < max_projects_per_person
+            m for m in self.members
+            if m not in team_set
+            and assigned_this_quarter.get(m, 0) < self._max_projects_per_person
         ]
-        
+
         # Prefer people with lighter workloads
         candidates.sort(key=lambda x: assigned_this_quarter.get(x, 0))
-        
-        while len(team) < team_size and candidates:
-            person = candidates.pop(0)
-            team.append(person)
-        
+
+        idx = 0
+        while len(team) < team_size and idx < len(candidates):
+            team.append(candidates[idx])
+            idx += 1
+
         return team[:team_size]
     
     def generate_schedule(self) -> None:
@@ -145,39 +157,38 @@ class TeamCirculation:
                         assignment = Assignment(person, project, is_leader)
                         self.assignments[quarter].append(assignment)
         
-        # Verify constraints
-        self._verify_constraints()
-    
-    def _verify_constraints(self) -> None:
-        """Verify that all constraints are met."""
-        print("Constraint Verification:")
-        print("-" * 50)
-        
-        # Check leadership distribution
-        print("\nLeadership assignments per person:")
-        for member in sorted(self.members):
-            count = self.leadership_count[member]
-            print(f"  {member}: {count} projects")
-        
-        # Check that each person leads at least 2 projects per year (if possible)
-        min_leadership = min(self.leadership_count.values())
-        max_leadership = max(self.leadership_count.values())
-        print(f"\nLeadership range: {min_leadership} to {max_leadership}")
-        
-        if min_leadership < 2:
-            print(f"⚠️  Warning: Some people lead fewer than 2 projects per year")
-        else:
-            print(f"✓ All people lead at least 2 projects per year")
-        
-        # Check team sizes
-        print("\nTeam sizes:")
+    def _verify_constraints(self) -> dict:
+        """
+        Verify constraints and return a summary dict — does not print anything.
+
+        Returns:
+            {
+                "min_leadership": int,
+                "max_leadership": int,
+                "leadership_per_member": {member: count, ...},
+                "team_size_violations": [(quarter, project, actual_size), ...],
+            }
+        """
+        leadership_per_member = {
+            m: self.leadership_count[m] for m in sorted(self.members)
+        }
+        counts = list(leadership_per_member.values())
+        min_leadership = min(counts)
+        max_leadership = max(counts)
+
+        violations = []
         for quarter in range(self.quarters):
             for project in self.projects:
-                team_size = len(self.project_teams.get((quarter, project), []))
-                if team_size < self.team_size_min or team_size > self.team_size_max:
-                    print(f"  ⚠️  Q{quarter + 1} {project}: {team_size} people (expected {self.team_size_min}-{self.team_size_max})")
-                else:
-                    print(f"  ✓ Q{quarter + 1} {project}: {team_size} people")
+                size = len(self.project_teams.get((quarter, project), []))
+                if size < self.team_size_min or size > self.team_size_max:
+                    violations.append((quarter, project, size))
+
+        return {
+            "min_leadership": min_leadership,
+            "max_leadership": max_leadership,
+            "leadership_per_member": leadership_per_member,
+            "team_size_violations": violations,
+        }
     
     def generate_markdown_table(self) -> str:
         """Generate a Markdown table showing all assignments."""
@@ -189,10 +200,16 @@ class TeamCirculation:
             output.append("| Project | Team Members | Leader |")
             output.append("|---------|--------------|--------|")
             
+            # Build O(1) leader lookup for this quarter up front.
+            leader_by_project = {
+                a.project: a.person
+                for a in self.assignments[quarter]
+                if a.is_leader
+            }
+
             for project in self.projects:
                 team = self.project_teams.get((quarter, project), [])
-                leader = next((a.person for a in self.assignments[quarter] 
-                             if a.project == project and a.is_leader), "—")
+                leader = leader_by_project.get(project, "—")
                 
                 # Apply display name formatting
                 team_display = ", ".join(self._get_display_name(member) for member in team)
@@ -230,8 +247,58 @@ def read_csv(filename: str, column: str = "name") -> List[str]:
     return values
 
 
+def read_seed_leaders(filename: str) -> Dict[str, str]:
+    """Read a CSV file mapping project names to their last-quarter leaders.
+
+    Expected format (with header row):
+        project,leader
+        Project Alpha,Alice Adams
+    """
+    result = {}
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if "project" in row and "leader" in row:
+                    project = row["project"].strip()
+                    leader = row["leader"].strip()
+                    if project and leader:
+                        result[project] = leader
+    except FileNotFoundError:
+        print(f"Error: Seed leaders file '{filename}' not found.")
+        exit(1)
+    except Exception as e:
+        print(f"Error reading seed leaders file '{filename}': {e}")
+        exit(1)
+    return result
+
+
+def parse_args(argv=None):
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="Pilime Method - Team Rotation Scheduler")
+    parser.add_argument(
+        "-q", "--quarters",
+        type=int,
+        default=4,
+        help="Number of quarters to schedule (default: 4)",
+    )
+    parser.add_argument(
+        "-s", "--seed-leaders",
+        default=None,
+        metavar="FILE",
+        help="CSV file mapping projects to their last-quarter leaders for Q1 continuity",
+    )
+
+    args = parser.parse_args(argv)
+    if args.quarters < 1:
+        parser.error("--quarters must be a positive integer")
+    return args
+
+
 def main():
     """Main entry point."""
+    args = parse_args()
+
     # Read input files
     members = read_csv("members.csv", "name")
     projects = read_csv("projects.csv", "name")
@@ -247,14 +314,43 @@ def main():
     print(f"Projects ({len(projects)}): {', '.join(projects)}")
     print()
     
+    # Load optional seed leaders
+    seed_leaders = {}
+    if args.seed_leaders:
+        seed_leaders = read_seed_leaders(args.seed_leaders)
+        print(f"Seed leaders loaded: {seed_leaders}")
+
     # Generate schedule
     # Set use_initials=True to display initials instead of full names
-    circulation = TeamCirculation(members, projects, quarters=4, use_initials=False)
+    circulation = TeamCirculation(
+        members, projects, quarters=args.quarters, use_initials=False,
+        seed_leaders=seed_leaders,
+    )
     circulation.generate_schedule()
     
     # Print verification
     print("\n" + "=" * 50)
-    circulation._verify_constraints()
+    constraints = circulation._verify_constraints()
+    print("Constraint Verification:")
+    print("-" * 50)
+    print("\nLeadership assignments per person:")
+    for member, count in constraints["leadership_per_member"].items():
+        print(f"  {member}: {count} projects")
+    print(f"\nLeadership range: {constraints['min_leadership']} to {constraints['max_leadership']}")
+    if constraints["min_leadership"] < 2:
+        print("⚠️  Warning: Some people lead fewer than 2 projects per year")
+    else:
+        print("✓ All people lead at least 2 projects per year")
+    print("\nTeam sizes:")
+    violation_set = {(q, p) for q, p, _ in constraints["team_size_violations"]}
+    for quarter in range(circulation.quarters):
+        for project in circulation.projects:
+            size = len(circulation.project_teams.get((quarter, project), []))
+            if (quarter, project) in violation_set:
+                print(f"  ⚠️  Q{quarter + 1} {project}: {size} people "
+                      f"(expected {circulation.team_size_min}-{circulation.team_size_max})")
+            else:
+                print(f"  ✓ Q{quarter + 1} {project}: {size} people")
     
     # Generate and save markdown
     print("\n" + "=" * 50)
